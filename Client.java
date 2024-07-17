@@ -91,13 +91,13 @@ public class Client {
         
         // send packet
         socket.send(packet);
-        System.out.println("< " + socket.getLocalAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + userMessage);
+        System.out.println("< " + InetAddress.getLocalHost().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + userMessage);
       
         // receive a response
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         socket.receive(receivePacket);
         String serverMessage = new String(receivePacket.getData(),0, receivePacket.getLength());
-        System.out.println("> " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + serverMessage);
+        System.out.println("> " + receivePacket.getAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + serverMessage);
       }
 
       socket.close();

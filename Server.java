@@ -86,8 +86,9 @@ public class Server {
         // receive one package
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         socket.receive(receivePacket);
+
         String clientMessage = new String(receivePacket.getData(),0, receivePacket.getLength());
-        System.out.println("> " + socket.getInetAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + clientMessage);
+        System.out.println("> " + receivePacket.getAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + clientMessage);
 
         // process result
         String response = String.valueOf(Calculator.calc(clientMessage));
@@ -96,7 +97,7 @@ public class Server {
         InetAddress clientAddress = receivePacket.getAddress();
         int clientPort = receivePacket.getPort();
         socket.send(new DatagramPacket(response.getBytes(), response.getBytes().length, clientAddress, clientPort));
-        System.out.println("< " + socket.getLocalAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + response);
+        System.out.println("< " + InetAddress.getLocalHost().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + response);
       }
       
     } catch (Exception e) {
