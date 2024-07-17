@@ -56,11 +56,11 @@ public class Server {
           if (clientMessage.equals("exit")) {
             // send message to client
             dataOut.writeUTF("exit");
-            System.out.println("< " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": exit");  
+            System.out.println("< " + socket.getLocalAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": exit");  
           } else {
             // send message to client
             dataOut.writeUTF(response);
-            System.out.println("< " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + response);
+            System.out.println("< " + socket.getLocalAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + response);
           }
         }
   

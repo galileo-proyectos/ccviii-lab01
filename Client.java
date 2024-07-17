@@ -53,11 +53,11 @@ public class Client {
 
         // send message to server
         dataOut.writeUTF(userMessage);
-        System.out.println("< " + socket.getInetAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] " + parsedArgs.protocol + ": " + userMessage);
+        System.out.println("< " + socket.getLocalAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] " + parsedArgs.protocol + ": " + userMessage);
 
         // receive message to server
         String serverMessage = dataIn.readUTF();
-        System.out.println("> " + InetAddress.getByName(parsedArgs.server).getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + serverMessage);
+        System.out.println("> " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + serverMessage);
       }
 
       dataOut.close();
