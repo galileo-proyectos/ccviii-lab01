@@ -2,9 +2,10 @@ package lib;
 
 public class ArgsParser {
   public static ParsedArgs parse(String[] args) {
-    String protocol = "";
-    String server = "";
-    String port = "";
+    // detault values
+    String protocol = "TCP";
+    String server = "localhost";
+    String port = "1234";
 
     // parse args (protocol, server, port)
     for (int i = 0; i < args.length; i += 2) {

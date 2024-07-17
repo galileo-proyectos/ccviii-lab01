@@ -53,11 +53,11 @@ public class Client {
 
         // send message to server
         dataOut.writeUTF(userMessage);
-        System.out.println("< " + socket.getLocalAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] " + parsedArgs.protocol + ": " + userMessage);
+        System.out.println("< " + socket.getInetAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] " + parsedArgs.protocol + ": " + userMessage);
 
         // receive message to server
         String serverMessage = dataIn.readUTF();
-        System.out.println("> " + parsedArgs.server + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + serverMessage);
+        System.out.println("> " + InetAddress.getByName(parsedArgs.server).getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + serverMessage);
       }
 
       dataOut.close();
@@ -91,13 +91,13 @@ public class Client {
         
         // send packet
         socket.send(packet);
-        System.out.println("< " + packet.getAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + userMessage);
+        System.out.println("< " + socket.getLocalAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + userMessage);
       
         // receive a response
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         socket.receive(receivePacket);
         String serverMessage = new String(receivePacket.getData(),0, receivePacket.getLength());
-        System.out.println("> " + receivePacket.getAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + serverMessage);
+        System.out.println("> " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + serverMessage);
       }
 
       socket.close();
@@ -107,5 +107,4 @@ public class Client {
       sc.close();
     }
   }
-
 }

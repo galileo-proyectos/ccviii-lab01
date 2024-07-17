@@ -48,7 +48,7 @@ public class Server {
         while (!clientMessage.equals("exit")) {
           // receive message from client
           clientMessage = dataIn.readUTF();
-          System.out.println("> " + socket.getInetAddress() + " client " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + clientMessage);
+          System.out.println("> " + socket.getInetAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + clientMessage);
   
           // process result
           String response = String.valueOf(Calculator.calc(clientMessage));
@@ -56,11 +56,11 @@ public class Server {
           if (clientMessage.equals("exit")) {
             // send message to client
             dataOut.writeUTF("exit");
-            System.out.println("< " + socket.getInetAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": exit");  
+            System.out.println("< " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": exit");  
           } else {
             // send message to client
             dataOut.writeUTF(response);
-            System.out.println("< " + socket.getInetAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + response);
+            System.out.println("< " + socket.getInetAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter) + " ] " + parsedArgs.protocol + ": " + response);
           }
         }
   
@@ -87,7 +87,7 @@ public class Server {
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         socket.receive(receivePacket);
         String clientMessage = new String(receivePacket.getData(),0, receivePacket.getLength());
-        System.out.println("> " + receivePacket.getAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + clientMessage);
+        System.out.println("> " + socket.getInetAddress().getHostAddress() + " client " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + clientMessage);
 
         // process result
         String response = String.valueOf(Calculator.calc(clientMessage));
@@ -96,7 +96,7 @@ public class Server {
         InetAddress clientAddress = receivePacket.getAddress();
         int clientPort = receivePacket.getPort();
         socket.send(new DatagramPacket(response.getBytes(), response.getBytes().length, clientAddress, clientPort));
-        System.out.println("< " + receivePacket.getAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + response);
+        System.out.println("< " + socket.getLocalAddress().getHostAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + response);
       }
       
     } catch (Exception e) {
