@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -72,6 +71,9 @@ public class Client {
   public static void runUDP (ParsedArgs parsedArgs) {
     // to read from keyboard
     Scanner sc = new Scanner(System.in);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+    byte[] receiveData = new byte[1024 * 10];    // 10kB
 
     try {
       DatagramSocket socket = new DatagramSocket();;
@@ -83,10 +85,19 @@ public class Client {
         userMessage = sc.nextLine();
 
         // build packet
-        packet = new DatagramPacket(userMessage.getBytes(), 0, InetAddress.getByName(parsedArgs.server), parsedArgs.port);
+        InetAddress serverAddress = InetAddress.getByName(parsedArgs.server);
+        int serverPort = parsedArgs.port;
+        packet = new DatagramPacket(userMessage.getBytes(), userMessage.getBytes().length, serverAddress, serverPort);
         
         // send packet
         socket.send(packet);
+        System.out.println("< " + packet.getAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + userMessage);
+      
+        // receive a response
+        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        socket.receive(receivePacket);
+        String serverMessage = new String(receivePacket.getData(),0, receivePacket.getLength());
+        System.out.println("> " + receivePacket.getAddress() + " server " + "[ " + LocalDateTime.now().format(formatter)  + " ] UDP: " + serverMessage);
       }
 
       socket.close();
